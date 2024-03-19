@@ -1,0 +1,31 @@
+[package]
+name = "withdraw"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+# Interact w/ EVM blockchains.
+ethers = {version = "2.0.8", features = ["abigen", "ws", "ipc"]}
+ethers-flashbots = { git = "https://github.com/onbjerg/ethers-flashbots" }
+ethers-providers = "2.0.10"
+
+# Loading .env variables.
+dotenv = "0.15.0"
+url = { version = "2.3.1", default-features = false }
+eyre = "0.6.0"
+anyhow = "1.0.71" 
+uniswap-sdk-core = "0.18"
+log = "0.4.17"
+colored = "2.0.0"
+fern = { version = "0.6.2", features = ["colored"] }
+chrono = "0.4.23"
+toml = "0.5.8"
+serde = { version ="1.0.133", features = ["derive"] }
+serde_json = "1.0.74"
+reqwest = "0.11.12"
+
+# Running async threads.
+tokio = { version = "1.5", features = ["macros", "rt-multi-thread"] }
